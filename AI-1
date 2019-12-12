@@ -1,0 +1,44 @@
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+
+ceo_name = 'John Doe'
+company_name = 'Microsystems Inc.'
+source_name = 'Yelp'
+
+email_user = 'testbott123456789@gmail.com'
+email_password = '[REDACTED]'
+email_send = 'mercuritesting01@gmail.com'
+
+subject = 'Quick Question about %s' %(company_name)
+
+msg = MIMEMultipart()
+msg['From'] = email_user
+msg['To'] = email_send
+msg['Subject'] = subject
+
+body = """
+Hey %s,
+    
+I came across %s while browsing through %s and I noticed a couple negative reviews…
+
+My name is Thomas Shehadeh, and my company has a 5-minute trick to completely stop bad online reviews and you a few hundred extra customers through your door each week.
+
+Can we schedule a quick 10-minute call and I can share more?
+
+Let me know! :)
+
+Cheers!
+- Thomas Shehadeh""" %(ceo_name,company_name,source_name)
+
+msg.attach(MIMEText(body,'plain'))
+
+text = msg.as_string()
+server = smtplib.SMTP('smtp.gmail.com',587)
+server.starttls()
+server.login(email_user,email_password)
+
+server.sendmail(email_user,email_send,text)
+server.quit()
